@@ -144,4 +144,15 @@ func main() {
 	bigger and will cause panic at runtime */
 	arrFromSlice := [4]int(sliceOne)
 	fmt.Println((arrFromSlice))
+	// You can use a type conversion to convert a slice into a pointer to an array
+	// The storage between the two is shared
+	sliceSix := []int{1, 2, 3, 4}
+	arrayPointerSix := (*[4]int)(sliceSix)
+	sliceSix[3] = sliceSix[3] * 3
+	fmt.Println("arrayPointerSix:", arrayPointerSix)
+	arrayPointerSix[3] =  arrayPointerSix[3] * 3
+	fmt.Println("sliceSix:", sliceSix)
+	sliceSix = append(sliceSix, 3)
+	fmt.Println("sliceSix:", sliceSix)
+	fmt.Println("arrayPointerSix:", arrayPointerSix)
 }
