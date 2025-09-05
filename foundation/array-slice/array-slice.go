@@ -81,4 +81,67 @@ func main() {
 	sliceOne[4] = 2
 	sliceOne[5] = 3
 	fmt.Println(sliceSliceOne)
+	// The update also effects the initial slice
+	sliceSliceOne[0] = 999
+	fmt.Println(sliceOne)
+	// Confusing slice behaviours with append
+	sliceAOne := []string{"a", "b", "c", "d"}
+	subSliceAOne := sliceAOne[:2]
+	fmt.Println("sliceAOne:", sliceAOne)
+	fmt.Println("subSliceAOne", subSliceAOne)
+
+	fmt.Println(cap(sliceAOne), cap(subSliceAOne))
+	/* Append doesn't work as expected due to sublice being created with
+	the capacity minus the offset and share the same memory*/
+	/* Which means they same the same memory up to the capacity of rhe original
+	slice, after the capacity has ben reached it appends normally */
+	subSliceAOne = append(subSliceAOne, "z")
+	subSliceAOne = append(subSliceAOne, "za")
+	// sliceAOne[3] = "STRIKE"
+	// sliceAOne[0] = "STRIKE"
+	// subSliceAOne[0] = "ACROBAT"
+	fmt.Println("sliceAOne:", sliceAOne)
+	fmt.Println("subSliceAOne", subSliceAOne)
+	subSliceAOne = append(subSliceAOne, "zb")
+	subSliceAOne = append(subSliceAOne, "zc")
+	fmt.Println("sliceAOne:", sliceAOne)
+	fmt.Println("subSliceAOne", subSliceAOne)
+	/* It seems like the connection is broken after appending outside the original
+	slice capacity */
+	sliceAOne[3] = "STRIKE"
+	sliceAOne[0] = "STRIKE"
+	fmt.Println("sliceAOne:", sliceAOne)
+	fmt.Println("subSliceAOne", subSliceAOne)
+	subSliceAOne[2] = "ACROBAT"
+	fmt.Println("sliceAOne:", sliceAOne)
+	fmt.Println("subSliceAOne", subSliceAOne)
+	// Use the full slice expression to prevent this to limit its capacity
+	var subSliceATwo = sliceAOne[0:2:2]
+	fmt.Println(subSliceATwo)
+	subSliceATwo = append(subSliceATwo, "NOPE")
+	fmt.Println(subSliceATwo)
+	// This prevent the original slice from sharing the whole capacity memory
+	fmt.Println(sliceAOne)
+	// Copy slice with copy(destination[start:end], source[start:end])
+	var destination = make([]int, 2)
+	var source = []int{1, 2, 3, 4}
+	copy(destination, source)
+	fmt.Println("copy:", destination)
+	// copy overlapping section
+	// YOu can use copy with array
+	copyOne := copy(source[:3], source[1:])
+	fmt.Println(copyOne, source)
+	// You can slice arrays
+	// To conver an entire array into a slice use the [:] syntax
+	// [start:end]
+	/* You can convert a subset of an array into a slice which has the same 
+	memory problems as a subslice */
+
+	// Convert slicest to arrays
+	// This creates a copy of the slice
+	// Arr type convertion doesn't work with [...] syntax
+	/* The size of the array can be smaller than the size of the slice but not
+	bigger and will cause panic at runtime */
+	arrFromSlice := [4]int(sliceOne)
+	fmt.Println((arrFromSlice))
 }
