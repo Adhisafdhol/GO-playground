@@ -75,4 +75,17 @@ func main() {
 	if set[9] {
 		fmt.Println("9 is in the set")
 	}
+
+	// You can also use struct
+	// an empty struct uses zero bytes, while a boolean uses one byte
+	structSet := map[int]struct{}{}
+	structValues := []int{1, 2, 3, 4, 5, 6, 6}
+
+	for _, value := range structValues {
+		structSet[value] = struct{}{}
+	}
+
+	if _, ok := structSet[5]; ok {
+		fmt.Println("5 is in the set")
+	}
 }
