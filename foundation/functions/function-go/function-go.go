@@ -166,4 +166,37 @@ func main() {
 	multiplyFunc := createMultiplyFunc()
 	resultMultiply := multiplyFunc(3, 5)
 	fmt.Println(resultMultiply)
+
+	// Go is call by value
+	// Go copy variables passed as the function parameters and won't
+	/* change the original variables, unless it is pointers type like a
+	slice or map */
+	type Person struct {
+		name    string
+		age     int
+		friends map[int]string
+	}
+
+	adrian := Person{
+		name: "Adrian",
+		age:  27,
+		friends: map[int]string{
+			0: "Me",
+			1: "Myself",
+			2: "I",
+		},
+	}
+
+	modifyPerson := func(person Person, age int) {
+		// This is essentially a copy
+		person.age = age
+		fmt.Println("inner:", person)
+		// But it does affect pointers, like maps and slices
+		person.friends[1] = "NOOO!!!"
+	}
+
+	/* this function won't affect the original person's non-pointers
+	fields.*/
+	modifyPerson(adrian, 28)
+	fmt.Println("outer", adrian)
 }
